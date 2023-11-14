@@ -1,0 +1,13 @@
+name: beectl
+version: 0.1.0
+
+authors:
+  - Mark Alexander <marka@pobox.com>
+
+targets:
+  beectl:
+    main: src/beectl.cr
+
+crystal: '>= 1.10.0'
+
+license: MIT
