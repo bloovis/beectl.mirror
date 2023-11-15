@@ -55,6 +55,14 @@ content = File.read(temppath)
 puts "Contents of tempfile:"
 puts content
 
+response = JSON.build do |json|
+  json.object do
+    json.field "text", content
+  end
+end
+
+puts "response = #{response}"
+
 puts "Deleting #{temppath}"
 tempfile.delete
 
