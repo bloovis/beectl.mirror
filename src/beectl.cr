@@ -27,11 +27,36 @@ values.each do |k,v|
     puts "v is a string"
   end
 end
-#if values["editor"].as_s?
-#  cmd = values["editor"]
-#else
-#  cmd = editor = ENV["EDITOR"] || "pe"
-#end
+
+editor = values["editor"].as(String)
+args = values["args"].as(Array(String))
+ext = values["ext"].as(String)
+if ext != ""
+  suffix = "." + ext
+else
+  suffix = nil
+end
+tempfile = File.tempfile("beectl-", suffix)
+temppath = tempfile.path
+puts "Created temp file #{temppath}"
+
+cmd = String.build do |cmd|
+  cmd << editor
+  args.each do |arg|
+    cmd << " " + arg
+  end
+  cmd << " " + temppath
+end
+
+puts "cmd = #{cmd}"
+system(cmd)
+
+content = File.read(temppath)
+puts "Contents of tempfile:"
+puts content
+
+puts "Deleting #{temppath}"
+tempfile.delete
 
 #values["args"].each do |arg|
 #  cmd << " " + arg
