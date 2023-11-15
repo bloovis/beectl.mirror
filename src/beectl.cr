@@ -1,36 +1,57 @@
 require "json"
 
-buf = Bytes.new(4)
-STDIN.read(buf)
-buf.each do |c|
-  puts "c = #{c}"
+DEBUG = false
+
+def dprint(s)
+  puts s if DEBUG
 end
-len : Int32 = 0
-[3,2,1,0].each do |i|
-  x : Int32 = buf[i].to_i32
-  len = (len << 8) + x
+
+def read_length
+  buf = Bytes.new(4)
+  STDIN.read(buf)
+  buf.each do |c|
+    dprint "c = #{c}"
+  end
+  len : Int32 = 0
+  [3,2,1,0].each do |i|
+    x : Int32 = buf[i].to_i32
+    len = (len << 8) + x
+  end
+  dprint(sprintf("%x\n", len))
+  return len
 end
-printf("%x\n", len)
+
+def write_length(len)
+  buf = Bytes.new(4)
+  [0,1,2,3].each do |i|
+    buf[i] = len.to_u8
+    len >>= 8
+  end
+  STDOUT.write(buf)
+end
+
+len = read_length
 slice = Bytes.new(len)
 STDIN.read(slice)
 jsonbuf = String.new(slice)
-puts "jsonbuf = #{jsonbuf}"
+dprint "jsonbuf = #{jsonbuf}"
 values = Hash(String, String | Array(String)).from_json(jsonbuf)
-#values = JSON.parse(jsonbuf)
 values.each do |k,v|
-  puts "key = #{k}, value = #{v}, value type = #{typeof(v)}"
+  dprint "key = #{k}, value = #{v}, value type = #{typeof(v)}"
   if k == "args"
     a = v.as(Array(String))
-    puts "v is an array of strings"
-    a.each {|s| puts "arg: #{s}"}
+    dprint "v is an array of strings"
+    a.each {|s| dprint "arg: #{s}"}
   else
-    puts "v is a string"
+    dprint "v is a string"
   end
 end
 
 editor = values["editor"].as(String)
 args = values["args"].as(Array(String))
 ext = values["ext"].as(String)
+text = values["text"].as(String)
+
 if ext != ""
   suffix = "." + ext
 else
@@ -38,7 +59,9 @@ else
 end
 tempfile = File.tempfile("beectl-", suffix)
 temppath = tempfile.path
-puts "Created temp file #{temppath}"
+tempfile << text
+tempfile.close
+dprint "Created temp file #{temppath}"
 
 cmd = String.build do |cmd|
   cmd << editor
@@ -48,12 +71,12 @@ cmd = String.build do |cmd|
   cmd << " " + temppath
 end
 
-puts "cmd = #{cmd}"
+dprint "cmd = #{cmd}"
 system(cmd)
 
 content = File.read(temppath)
-puts "Contents of tempfile:"
-puts content
+dprint "Contents of tempfile:"
+dprint content
 
 response = JSON.build do |json|
   json.object do
@@ -61,9 +84,13 @@ response = JSON.build do |json|
   end
 end
 
-puts "response = #{response}"
+dprint "response = #{response}"
+len = response.bytesize
 
-puts "Deleting #{temppath}"
+write_length(len)
+STDOUT << response
+
+dprint "Deleting #{temppath}"
 tempfile.delete
 
 #values["args"].each do |arg|
