@@ -1,27 +1,55 @@
-# beectl
+# beectl - Crystal implementation of host program for Browser's External Editor
 
-TODO: Write a description here
+[Browser's External Editor](https://github.com/rosmanov/chrome-bee),
+(aka chrome-bee) is a browser extension that allows you to use an external
+editor to edit text areas in browser forms.  It communicates with a
+host program called beectl that runs the editor and returns the edited
+text.  The BEE repostiory linked to above provides a Python
+implementation of the host program, and there is a also separate [C
+implementation](https://github.com/rosmanov/bee-host).
+
+This Crystal implementation of beectl requires only an installation of
+the [Crystal compiler], and has no other dependencies.
 
 ## Installation
 
-TODO: Write installation instructions here
+Build the program with either:
 
-## Usage
+    make
 
-TODO: Write usage instructions here
+or:
 
-## Development
+    crystal build --no-color src/beectl.cr
 
-TODO: Write development instructions here
+Once this is built, resulting in a `beectl` binary, you must do some additional configuration for Chrome-based browsers,
+as described in the [BEE Wiki](https://github.com/rosmanov/chrome-bee/wiki/Configuration-in-Chrome).
+Note that the procedure described there installs a file `com.ruslan_osmanov.bee.json`
+in the `NativeMessageHosts` configuration directory for your browser, and that
+only Chrome and Firefox are supported.  I use the ungoogled-chromium browser,
+and I had to create a modified file `$HOME/.config/chromium/NativeMessagingHosts/com.ruslan_osmanov.bee.json`
+that looks like this:
 
-## Contributing
+    {
+       "allowed_origins" : [
+          "chrome-extension://haenebhcepllcpneciadjchacagagfkc/",
+          "chrome-extension://moakhilhbeednkjahjmomncgigcoemoi/"
+          "chrome-extension://hpjfedijojbkggipmcnoadekibdpcjde/",
+       ],
+       "description" : "Bee - Browser's external editor",
+       "name" : "com.ruslan_osmanov.bee",
+       "path" : "/home/path-to-beectl/beectl",
+       "type" : "stdio"
+}
 
-1. Fork it (<https://github.com/your-github-user/beectl/fork>)
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
+The ID in third `chrome-extension` setting is the one I had to use for ungoogled-chromium.
+You can find the exact ID for your installation of the chrome-bee extension
+by going to your browser's extension settings and copying the ID you see there.
 
-## Contributors
+You will also to change the `path` setting to point to the actual location
+of the compiled `beectl` program.
 
-- [Mark Alexander](https://github.com/your-github-user) - creator and maintainer
+I have not tried to use chrome-bee or beectl in Firefox.
+
+## Testing.
+
+
