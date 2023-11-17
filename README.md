@@ -4,12 +4,12 @@
 (aka chrome-bee) is a browser extension that allows you to use an external
 editor to edit text areas in browser forms.  It communicates with a
 host program called beectl that runs the editor and returns the edited
-text.  The BEE repostiory linked to above provides a Python
+text.  The chrome-bee repository linked to above provides a Python
 implementation of the host program, and there is a also separate [C
 implementation](https://github.com/rosmanov/bee-host).
 
 This Crystal implementation of beectl requires only an installation of
-the [Crystal compiler], and has no other dependencies.
+the [Crystal compiler](https://crystal-lang.org/), and has no other dependencies.
 
 ## Installation
 
@@ -32,8 +32,8 @@ that looks like this:
     {
        "allowed_origins" : [
           "chrome-extension://haenebhcepllcpneciadjchacagagfkc/",
-          "chrome-extension://moakhilhbeednkjahjmomncgigcoemoi/"
-          "chrome-extension://hpjfedijojbkggipmcnoadekibdpcjde/",
+          "chrome-extension://moakhilhbeednkjahjmomncgigcoemoi/",
+          "chrome-extension://hpjfedijojbkggipmcnoadekibdpcjde/"
        ],
        "description" : "Bee - Browser's external editor",
        "name" : "com.ruslan_osmanov.bee",
@@ -52,4 +52,11 @@ I have not tried to use chrome-bee or beectl in Firefox.
 
 ## Testing.
 
+There is a simple spec test that simulates how the browser runs
+beectl.  Run the test using:
 
+    make test
+
+or
+
+    crystal spec --no-color
