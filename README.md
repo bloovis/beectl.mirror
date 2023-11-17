@@ -21,12 +21,15 @@ or:
 
     crystal build --no-color src/beectl.cr
 
-Once this is built, resulting in a `beectl` binary, you must do some additional configuration for Chrome-based browsers,
+Once this is built, resulting in a `beectl` binary, you must do some additional
+configuration for Chrome-based browsers,
 as described in the [BEE Wiki](https://github.com/rosmanov/chrome-bee/wiki/Configuration-in-Chrome).
 Note that the procedure described there installs a file `com.ruslan_osmanov.bee.json`
 in the `NativeMessageHosts` configuration directory for your browser, and that
-only Chrome and Firefox are supported.  I use the ungoogled-chromium browser,
-and I had to create a modified file `$HOME/.config/chromium/NativeMessagingHosts/com.ruslan_osmanov.bee.json`
+only Chrome and Firefox are supported.  I use the
+[ungoogled-chromium](https://github.com/ungoogled-software/ungoogled-chromium) browser,
+and I had to create a modified file
+`$HOME/.config/chromium/NativeMessagingHosts/com.ruslan_osmanov.bee.json`
 that looks like this:
 
     {
@@ -48,7 +51,13 @@ by going to your browser's extension settings and copying the ID you see there.
 You will also need to change the `path` setting to point to the actual location
 of the compiled `beectl` program.
 
-I have not tried to use chrome-bee or beectl in Firefox.
+Finally, you will need to set the keyboard shortcut that will invoke the external
+editor.  Visit this URL in chromium/Chrome: <chrome://extensions/shortcuts>.  Then
+set the shorcut for Browser's External Editor.  I used Alt-E to avoid conflict
+with Ctrl-E, which is used for editing in entry fields.
+
+I have not tried to use chrome-bee or beectl in any browser other than
+ungoogled-chromium.
 
 ## Testing.
 
