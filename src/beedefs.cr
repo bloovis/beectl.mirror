@@ -33,7 +33,7 @@ module Beectl
 
   # Read a message consisting of a 32-bit little-endian length,
   # followed by a JSON string of that length.  Convert the JSON
-  # strong to Hash and return it.
+  # string to Hash and return it.
 
   def read_hash(file : IO)
     len = read_length(file)
@@ -98,7 +98,7 @@ module Beectl
   end
 
   def main
-    # Read the JSON requestion, convert it to a hash and extract
+    # Read the JSON request, convert it to a hash and extract
     # its values.
     values = read_hash(STDIN)
     editor = values["editor"].as(String)
