@@ -1,2 +1,2 @@
 require "spec"
-require "../src/beectl"
+require "../src/beedefs"
