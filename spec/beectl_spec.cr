@@ -10,7 +10,7 @@ describe Beectl do
 
     request = Hash(String, String | Array(String)){
               "editor" => "./editor.sh",
-	        "args" => [] of String,
+	        "args" => ["-x", "-y"],
 	        "ext" => "txt",
 	        "text" => "This is a test.\n"}
     Beectl.write_hash(pipe.input, request)
@@ -18,7 +18,7 @@ describe Beectl do
 
     values = Beectl.read_hash(pipe.output)
     text = values["text"].as(String)
-    text.should eq("This is a test.\nThis is another test.\n")
+    text.should eq("This is a test.\nThis is another test with args -x -y.\n")
 
     pipe.wait
   end
