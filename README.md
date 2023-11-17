@@ -1,7 +1,7 @@
 # beectl - Crystal implementation of host program for Browser's External Editor
 
 [Browser's External Editor](https://github.com/rosmanov/chrome-bee),
-(aka chrome-bee) is a browser extension that allows you to use an external
+aka chrome-bee, is a browser extension that allows you to use an external
 editor to edit text areas in browser forms.  It communicates with a
 host program called beectl that runs the editor and returns the edited
 text.  The chrome-bee repository linked to above provides a Python
@@ -45,7 +45,7 @@ The ID in third `chrome-extension` setting is the one I had to use for ungoogled
 You can find the exact ID for your installation of the chrome-bee extension
 by going to your browser's extension settings and copying the ID you see there.
 
-You will also to change the `path` setting to point to the actual location
+You will also need to change the `path` setting to point to the actual location
 of the compiled `beectl` program.
 
 I have not tried to use chrome-bee or beectl in Firefox.
