@@ -52,7 +52,7 @@ You will also need to change the `path` setting to point to the actual location
 of the compiled `beectl` program.
 
 Finally, you will need to set the keyboard shortcut that will invoke the external
-editor.  Visit this URL in chromium/Chrome: <chrome://extensions/shortcuts>.  Then
+editor.  Visit [chrome://extensions/shortcuts](chrome://extensions/shortcuts) in chromium/chrome.  Then
 set the shorcut for Browser's External Editor.  I used Alt-E to avoid conflict
 with Ctrl-E, which is used for editing in entry fields.
 
