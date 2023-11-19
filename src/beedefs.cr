@@ -51,7 +51,7 @@ module Beectl
     return JSON.parse(jsonbuf)
   end
 
-  # Read a 32-bit little-endian integer from the file.
+  # Write a 32-bit little-endian integer to the file.
   # In perl or python we could do this with a pack one-liner.
 
   def write_length(file : IO, len)
