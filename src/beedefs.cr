@@ -16,6 +16,9 @@ module Beectl
     puts s if DEBUG
   end
 
+  # Read a 32-bit little-endian integer from the file.
+  # In perl or python we could do this with an unpack one-liner.
+
   def read_length(file : IO)
     buf = Bytes.new(4)
     file.read(buf)
@@ -38,25 +41,18 @@ module Beectl
   def read_hash(file : IO)
     len = read_length(file)
     if len > 1000
-      return Hash(String, String | Array(String)){"error" => "length #{len}"}
+      jsonbuf = %({"error":"length #{len}"})
+    else
+      slice = Bytes.new(len)
+      file.read(slice)
+      jsonbuf = String.new(slice)
     end
-    slice = Bytes.new(len)
-    file.read(slice)
-    jsonbuf = String.new(slice)
     dprint "jsonbuf = #{jsonbuf}"
-    values = Hash(String, String | Array(String)).from_json(jsonbuf)
-    values.each do |k,v|
-      dprint "key = #{k}, value = #{v}, value type = #{typeof(v)}"
-      if k == "args"
-	a = v.as(Array(String))
-	dprint "v is an array of strings"
-	a.each {|s| dprint "arg: #{s}"}
-      else
-	dprint "v is a string"
-      end
-    end
-    return values
+    return JSON.parse(jsonbuf)
   end
+
+  # Read a 32-bit little-endian integer from the file.
+  # In perl or python we could do this with a pack one-liner.
 
   def write_length(file : IO, len)
     buf = Bytes.new(4)
@@ -71,26 +67,8 @@ module Beectl
   # of the JSON string as a 32-bit little-endian integer, followed
   # by the JSON string itself.
 
-  def write_hash(file : IO, values : Hash(String, String | Array(String)))
-    response = JSON.build do |json|
-      json.object do
-	values.each do |k,v|
-	  dprint "key = #{k}, value = #{v}, value type = #{typeof(v)}"
-	  if k == "args"
-	    args = v.as(Array(String))
-	    json.field "args" do
-	      json.array do
-		args.each {|a| json.string a}
-	      end
-	    end
-	  else
-	    dprint "v is a string"
-	    json.field k, v
-	  end
-	end
-      end
-    end
-
+  def write_hash(file : IO, values)
+    response = values.to_json
     dprint "response = #{response}"
     len = response.bytesize
     write_length(file, len)
@@ -101,10 +79,10 @@ module Beectl
     # Read the JSON request, convert it to a hash and extract
     # its values.
     values = read_hash(STDIN)
-    editor = values["editor"].as(String)
-    args = values["args"].as(Array(String))
-    ext = values["ext"].as(String)
-    text = values["text"].as(String)
+    editor = values["editor"].as_s
+    args = values["args"].as_a
+    ext = values["ext"].as_s
+    text = values["text"].as_s
 
     # If a file suffix was specified, prepend it with a '.'; otherwise
     # don't use a suffix.
@@ -125,7 +103,7 @@ module Beectl
     cmd = String.build do |cmd|
       cmd << editor
       args.each do |arg|
-	cmd << " " + arg
+	cmd << " " + arg.as_s
       end
       cmd << " " + temppath
     end
@@ -137,7 +115,7 @@ module Beectl
     content = File.read(temppath)
     dprint "Contents of tempfile:"
     dprint content
-    response = Hash(String, String | Array(String)){"text" => content}
+    response = {"text" => content}
     write_hash(STDOUT, response)
 
     # Delete the temporary file.

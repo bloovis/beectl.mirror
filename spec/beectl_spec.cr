@@ -17,7 +17,7 @@ describe Beectl do
     pipe.input.close
 
     values = Beectl.read_hash(pipe.output)
-    text = values["text"].as(String)
+    text = values["text"].as_s
     text.should eq("This is a test.\nThis is another test with args -x -y.\n")
 
     pipe.wait
