@@ -111,7 +111,7 @@ module Beectl
     system(cmd)
 
     # Read the contents of the temporary file and write it
-    # out in JSON formation as the response.
+    # out in JSON form as the response.
     content = File.read(temppath)
     dprint "Contents of tempfile:"
     dprint content
