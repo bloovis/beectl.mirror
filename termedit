@@ -1,0 +1,5 @@
+#!/bin/sh
+# This is a script that can be invoked from beectl to run your favorite
+# terminal-based editor.  Feel free to change the font, color scheme,
+# and terminal size.
+xterm -fa 'DejaVu Sans Mono:size=9' -bg cornsilk1 -fg black -geometry 110x60 -e $EDITOR "$@"
