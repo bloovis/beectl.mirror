@@ -5,7 +5,7 @@ aka chrome-bee, is a browser extension by Ruslan Osmanov that allows you to use 
 editor to edit text areas in browser forms.  It communicates with a
 host program called beectl that runs the editor and returns the edited
 text.  The chrome-bee repository linked to above provides a Python
-implementation of the host program, and there is a also separate [C
+implementation of the host program, and there is also a separate [C
 implementation](https://github.com/rosmanov/bee-host).
 
 This Crystal implementation of beectl requires only an installation of
