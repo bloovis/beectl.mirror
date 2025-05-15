@@ -12,8 +12,13 @@ module Beectl
 
   extend self
 
+  @@logfile = STDOUT
+
   def dprint(s)
-    puts s if DEBUG
+    if DEBUG
+      @@logfile.puts s
+      @@logfile.flush
+    end
   end
 
   # Read a 32-bit little-endian integer from the file.
@@ -76,6 +81,11 @@ module Beectl
   end
 
   def main
+    if DEBUG
+      @@logfile = File.open("/tmp/beectl.log", "w")
+    end
+    dprint "Starting beectl"
+
     # Read the JSON request, convert it to a hash and extract
     # its values.
     values = read_hash(STDIN)
