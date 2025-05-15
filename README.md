@@ -21,16 +21,30 @@ or:
 
     crystal build --no-color src/beectl.cr
 
-Once this is built, resulting in a `beectl` binary, you must do some additional
-configuration for Chrome-based browsers,
-as described in the [BEE Wiki](https://github.com/rosmanov/chrome-bee/wiki/Configuration-in-Chrome).
-Note that the procedure described there installs a file `com.ruslan_osmanov.bee.json`
-in the `NativeMessageHosts` configuration directory for your browser, and that
-only Chrome and Firefox are supported.  I use the
-[ungoogled-chromium](https://github.com/ungoogled-software/ungoogled-chromium) browser,
-and I had to create a modified file
-`$HOME/.config/chromium/NativeMessagingHosts/com.ruslan_osmanov.bee.json`
-that looks like this:
+To make browser configuration a little simpler, I chose to copy
+the resulting binary file `beectl` to `/usr/local/bin`:
+
+    sudo cp beectl /usr/local/bin
+
+## Install the browser extension
+
+Install the "Browser's External Editor" extension in Chrome or Firefox,
+using the normal sources for extensions.  In the settings page for
+the extension, set the the path to your editor, and set some regular expressions
+and file extensions for sites where you want to use beectl.
+
+Now you have to create a native messaging manifest file for
+your browser, and also set a shortcut key.
+
+### Chrome
+
+The full path of the manifest file is:
+
+    $HOME/.config/chromium/NativeMessagingHosts/com.ruslan_osmanov.bee.json
+
+Create the directory `$HOME/.config/chromium/NativeMessagingHosts` if
+it does not already exist.  Then in that directory, create the file
+`com.ruslan_osmanov.bee.json` with the following contents:
 
     {
        "allowed_origins" : [
@@ -40,24 +54,53 @@ that looks like this:
        ],
        "description" : "Bee - Browser's external editor",
        "name" : "com.ruslan_osmanov.bee",
-       "path" : "/home/path-to-beectl/beectl",
+       "path" : "/usr/local/bin/beectl",
        "type" : "stdio"
-}
+    }
 
-The ID in third `chrome-extension` setting is the one I had to use for ungoogled-chromium.
+The ID in the third `chrome-extension` setting is the one I had to use for ungoogled-chromium.
 You can find the exact ID for your installation of the chrome-bee extension
 by going to your browser's extension settings and copying the ID you see there.
 
-You will also need to change the `path` setting to point to the actual location
-of the compiled `beectl` program.
+I have not tried standard Chrome, and do not know if the third `chrome-extension`
+setting is necessary there.
+
+Replace the value for the `path` setting with the correct
+path to `beectl`.
 
 Finally, you will need to set the keyboard shortcut that will invoke the external
 editor.  Visit [chrome://extensions/shortcuts](chrome://extensions/shortcuts) in chromium/chrome.  Then
-set the shorcut for Browser's External Editor.  I used Alt-E to avoid conflict
-with Ctrl-E, which is used for editing in entry fields.
+set the shorcut for Browser's External Editor.  I used `Alt-E` to avoid conflict
+with `Ctrl-E`, which is used for editing in entry fields.
 
-I have not tried to use chrome-bee or beectl in any browser other than
-ungoogled-chromium.
+### Firefox
+
+The full path of the manifest file is:
+
+    $HOME/.mozilla/native-messaging-hosts/com.ruslan_osmanov.bee.json
+
+Create the directory `$HOME/.mozilla/native-messaging-hosts` if
+it does not already exist.  Then in that directory, create the file
+`com.ruslan_osmanov.bee.json` with the following contents:
+
+    {
+      "name": "com.ruslan_osmanov.bee",
+      "description": "Bee - Browser's external editor",
+      "path": "/usr/local/bin/beectl",
+      "type": "stdio",
+      "allowed_extensions": [
+         "bee@ruslan_osmanov.com"
+      ]
+    }
+
+Replace the value for the `path` setting with the correct
+path to `beectl`.
+
+Finally, you will need to set the keyboard shortcut that will invoke the external
+editor.  In the settings page for the extension, click on the gear icon
+at the upper right corner of the settings, and select Manage Extension Shortcuts.
+I used `Ctrl-7` to avoid conflict with the numerous existing shortcuts
+for Firefox and the other extensions I use.
 
 ## Testing.
 
