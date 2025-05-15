@@ -28,10 +28,16 @@ the resulting binary file `beectl` to `/usr/local/bin`:
 
 ## Install the browser extension
 
-Install the "Browser's External Editor" extension in Chrome or Firefox,
-using the normal sources for extensions.  In the settings page for
-the extension, set the the path to your editor, and set some regular expressions
-and file extensions for sites where you want to use beectl.
+Install the "Browser's External Editor" extension in Chrome or
+Firefox, using the normal sources for extensions.  Then
+in the settings page for the extension, make the following
+changes:
+
+* Set the path to your editor.
+* Optionally, set some regular expressions and file extensions for specific
+sites.  This isn't strictly necessary; I suspect it is only useful for
+editors that change their behavior based on file
+extensions (e.g., EMACS modes).
 
 Now you have to create a native messaging manifest file for
 your browser, and also set a shortcut key.
