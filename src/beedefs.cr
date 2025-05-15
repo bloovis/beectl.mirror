@@ -6,7 +6,7 @@
 
 require "json"
 
-DEBUG = false
+DEBUG = true
 
 module Beectl
 
@@ -62,7 +62,7 @@ module Beectl
   def write_length(file : IO, len)
     buf = Bytes.new(4)
     [0,1,2,3].each do |i|
-      buf[i] = len.to_u8
+      buf[i] = (len & 0xff).to_u8
       len >>= 8
     end
     file.write(buf)

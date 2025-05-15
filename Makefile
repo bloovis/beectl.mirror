@@ -4,3 +4,7 @@ beectl : src/beectl.cr src/beedefs.cr
 .PHONY: test
 test : beectl
 	crystal spec --no-color
+
+.PHONY: install
+install : beectl
+	sudo cp beectl /usr/local/bin

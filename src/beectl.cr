@@ -2,4 +2,10 @@
 
 require "./beedefs"
 
-Beectl.main
+begin
+  Beectl.main
+rescue ex
+  Beectl.dprint "Oh crap!  An exception occurred!"
+  Beectl.dprint ex.inspect_with_backtrace
+end
+
