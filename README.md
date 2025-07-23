@@ -1,5 +1,8 @@
 # beectl - Crystal implementation of host program for Browser's External Editor
 
+(*Note*: If you are reading this on Github, you can find the
+original Fossil repository [here](https://www.bloovis.com/fossil/home/marka/fossils/beectl/home)).
+
 [Browser's External Editor](https://github.com/rosmanov/chrome-bee),
 aka chrome-bee, is a browser extension by Ruslan Osmanov that allows you to use an external
 editor to edit text areas in browser forms.  It communicates with a
