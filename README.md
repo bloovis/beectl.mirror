@@ -19,7 +19,7 @@ the [Crystal compiler](https://crystal-lang.org/), and has no other dependencies
 To clone this repository:
 
 ```
-fossil clone https://chiselapp.com/user/bloovis/repository/beectl beectl.fossil
+fossil clone https://www.bloovis.com/fossil/home/marka/fossils/beectl
 ```
 
 Build the program with either:
