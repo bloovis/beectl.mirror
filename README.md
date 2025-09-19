@@ -46,7 +46,7 @@ Firefox, using the normal sources for extensions.  Then
 in the settings page for the extension, make the following
 changes:
 
-* Set the path to your editor.
+* Set the full path to your editor.
 * Optionally, set some regular expressions and file extensions for specific
 sites.  This isn't strictly necessary; I suspect it is only useful for
 editors that change their behavior based on file
@@ -55,16 +55,21 @@ extensions (e.g., EMACS modes).
 Now you have to create a native messaging manifest file for
 your browser, and also set a shortcut key.
 
-### Chrome
+### Ungoogled Chromium and Brave
 
-The full path of the manifest file is:
+For Ungoogled Chromium, the directory where the manifest file will be located is:
 
 ```
-$HOME/.config/chromium/NativeMessagingHosts/com.ruslan_osmanov.bee.json
+$HOME/.config/chromium/NativeMessagingHosts
 ```
 
-Create the directory `$HOME/.config/chromium/NativeMessagingHosts` if
-it does not already exist.  Then in that directory, create the file
+For Brave, the full path of the manifest file directory is:
+
+```
+$HOME/.config/BraveSoftware/Brave-Browser/NativeMessagingHosts
+```
+
+Create this directory it does not already exist.  Then in that directory, create the file
 `com.ruslan_osmanov.bee.json` with the following contents:
 
 ```
@@ -85,14 +90,17 @@ The ID in the third `chrome-extension` setting is the one I had to use for ungoo
 You can find the exact ID for your installation of the chrome-bee extension
 by going to your browser's extension settings and copying the ID you see there.
 
-I have not tried standard Chrome, and do not know if the third `chrome-extension`
-setting is necessary there.
+Only the second `chrome-extension` line is necessary for Brave; the
+ID is identical to the ID in beectl's URL in the Chrome Web Store.
+The first and third lines aren't necessary, but leaving them in does no harm.
+
 
 Replace the value for the `path` setting with the correct
 path to `beectl`.
 
 Finally, you will need to set the keyboard shortcut that will invoke the external
-editor.  Visit [chrome://extensions/shortcuts](chrome://extensions/shortcuts) in chromium/chrome.  Then
+editor.  Visit `chrome://extensions/shortcuts` in chromium/chrome, or
+`brave://extensions/shortcuts` in Brave.  Then
 set the shorcut for Browser's External Editor.  I used `Alt-E` to avoid conflict
 with `Ctrl-E`, which is used for editing in entry fields.
 
